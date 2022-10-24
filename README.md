@@ -69,7 +69,7 @@ Error response from daemon: Head "https://us-central1-docker.pkg.dev/v2/$BUILDER
 denied: Permission "artifactregistry.repositories.downloadArtifacts" denied on resource "projects/$BUILDER_PROJECT_ID/locations/us-central1/repositories/ar1" (or it may not exist)
 
 ## test running locally
-go run main.go --username="$GCLOUD_USER" \
+go run main.go --username="oauth2accesstoken" \
   --token=$AR_TOKEN \
   --image="us-central1-docker.pkg.dev/$BUILDER_PROJECT_ID/ar1/myimage:server"
 
@@ -85,7 +85,7 @@ docker build -t gcr.io/$OPERATOR_PROJECT_ID/did:latest .
 
 # run via docker locally
 docker run -v /var/run/docker.sock:/var/run/docker.sock gcr.io/$OPERATOR_PROJECT_ID/did:latest \
-   --username="$GCLOUD_USER" \
+   --username="oauth2accesstoken" \
   --token=$AR_TOKEN \
   --image="us-central1-docker.pkg.dev/$BUILDER_PROJECT_ID/ar1/myimage:server"
 
@@ -117,7 +117,7 @@ gcloud compute instances create-with-container instance-2  \
            --container-image=gcr.io/$OPERATOR_PROJECT_ID/did:latest   \
            --container-mount-host-path=host-path=/var/run/docker.sock,mode=rw,mount-path=/var/run/docker.sock \
            --container-arg="--token=$AR_TOKEN" \
-           --container-arg="--username=$GCLOUD_USER" \
+           --container-arg="--username=oauth2accesstoken" \
            --container-arg="--image=us-central1-docker.pkg.dev/$BUILDER_PROJECT_ID/ar1/myimage:server"
 
 ```
